@@ -1,0 +1,144 @@
+How to Handle Configuration Changes in Android?
+Read
+Discuss
+Courses
+Practice
+Sometimes the Android device undergoes configuration changes, during application runtime. While the device undergoing configuration changes all the activities and fragments are recreated. This restarting of the application while configuration changes help the application to adapt to new configurations by automatically reloading application alternative resources that match the new device configuration. And while happening this recreation of activities and fragments the data and UI need to be restored. The traditional way of doing this is using bundles and handling the callbacks of onSavedInstanceStae(). Refer to How to Restore Data on Configuration Changed in Android using Bundles?. Now have a look a the following image of how the data is lost during configuration changes if not handled properly. So in this discussion, it’s been demonstrated how we can restore the data and update the UI after configuration changes.
+
+Note: This discussion is implemented in the Kotlin programming language.
+
+
+
+Steps to handle the configuration changes in android
+Step 1: Create empty activity Android Studio project
+
+Create an empty activity Android Studio project and select Kotlin as the programming language. Refer to Android | How to Create/Start a New Project in Android Studio?.
+
+Step 2: Adding the required dependencies
+
+This project needs the dependency of Lifecycle extensions, ViewModels and Livedata. So add the following dependencies to the app-level Gradle file.
+
+// lifecycle_version and architecture version may vary
+def lifecycle_version = “2.3.1”
+def arch_version = “2.1.0”
+
+// ViewModel
+
+implementation “androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version”
+
+// LiveData
+
+implementation “androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version”
+
+// Lifecycles only (without ViewModel or LiveData)
+
+implementation “androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version”
+
+// architecture Lifecycle extensions
+
+implementation “androidx.lifecycle:lifecycle-extensions:$arch_version”
+
+Step 3: Working with activity_main.xml file
+
+The main layout of the application contains one button and one TextView. To implement the same invoke the following code inside the activity_main.xml file.
+
+<?xml version="1.0" encoding="utf-8"?> 
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    tools:ignore="HardcodedText"> 
+  
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TextAppearance.MaterialComponents.Headline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" /> 
+  
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="INCREMENT"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" /> 
+  
+</androidx.constraintlayout.widget.ConstraintLayout>
+Output UI:
+
+
+
+Step 4: Understanding the scope of ViewModel during the entire activity
+
+By referring to the following image, it’s observed that the objects of ViewModel are scoped to lifecycle owner passed to the ViewModelProvider when getting ViewModel. The ViewModel object remains in the memory for the entire lifecycle of the lifecycle owner. Here the lifecycle owner is the MainActivity.kt which has its own lifecycle.
+In case of activity, when the activity has finished the scope of the ViewModel object is destroyed. In the case of the Fragment, when it’s detached.
+The ViewModel object created when the system calls the onCreate() method. It may be called several times, throughout the life of activity. Such as when the device is rotated. The ViewModel object still exists when it was requested for the first time until the activity is finished and destroyed.
+
+
+Step 5: Creating ViewModel for the activity
+
+The ViewModel class inherits the ViewModel as the superclass. And the required data members and the member functions are created inside it, in which the scope of all data members and the functions remain throughout the life of activity. To implement the ViewModel create a class called MyViewModel.kt and invoke the following code.
+
+import androidx.lifecycle.ViewModel 
+  
+class MyViewModel : ViewModel() { 
+  
+    // number to increment and show on UI 
+    var number = 0
+  
+    // function when called increments the value of number 
+    fun addNumber(): Int = number++ 
+  
+}
+Step 6: Working with MainActivity.kt
+
+In the MainActivity.kt file, the object of the ViewModel is created using the ViewModelProvider, of the lifecycle owner. Here the lifecycle owner is MainAactivity.kt file. To implement the same invoke the following code inside the MainActivity.kt file.
+
+import androidx.appcompat.app.AppCompatActivity 
+import android.os.Bundle 
+import android.widget.Button 
+import android.widget.TextView 
+import androidx.lifecycle.ViewModelProvider 
+  
+class MainActivity : AppCompatActivity() { 
+  
+    override fun onCreate(savedInstanceState: Bundle?) { 
+        super.onCreate(savedInstanceState) 
+        setContentView(R.layout.activity_main) 
+  
+        // create instance of the viewModel of the Custom MyViewModel for the activity MainActivity.kt 
+        val myViewModel: MyViewModel = ViewModelProvider(this).get(MyViewModel::class.java) 
+  
+        // create instances of the UI elements 
+        val button: Button = findViewById(R.id.button) 
+        val textView: TextView = findViewById(R.id.textView) 
+  
+        textView.text = myViewModel.number.toString() 
+        button.setOnClickListener { 
+            // trigger the increment 
+            // function to increment the value 
+            myViewModel.incrementNumber() 
+  
+            // set the updated value of number to the TextView 
+            textView.text = myViewModel.number.toString() 
+        } 
+    } 
+}
+Output:
+
+Video Player
+
+00:00
+00:18
+

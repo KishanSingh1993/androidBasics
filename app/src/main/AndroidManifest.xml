@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AndroidBasics"
+        tools:targetApi="31">
+        <activity
+            android:name=".workmanager.WorkNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".workmanager.NotificationActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".services.NewService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".services.AndroidServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".broadcast.BroadcastActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvvmwithkotlincoroutinesandretrofit.MovieActivity"
+            android:exported="false" />
+        <activity
+            android:name=".intentandintentfilters.IntentAndIntentFiltersActivity"
+            android:exported="false">
+
+            <!-- SEND INTENT FILTER -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <!-- VIEW INTENT FILTER -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https://eduforyou8.godaddysites.com/" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".viewmodelsandconfigchange.AndroidViewModelAndConfigChanges"
+            android:exported="false" />
+        <activity
+            android:name=".launchmode.singletop.SingleTopActivity1"
+            android:exported="false" />
+        <activity
+            android:name=".launchmode.standard.StandardActivity2"
+            android:exported="false"
+            android:launchMode="standard" />
+        <activity
+            android:name=".launchmode.standard.StandardActivity1"
+            android:exported="false"
+            android:launchMode="standard" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="standard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

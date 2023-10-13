@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Android Basics</string>
+    <string name="click_me">Click Me</string>
+    <string name="heading">Services In Android</string>
+    <string name="startButtonText">Start the Service</string>
+    <string name="stopButtonText">Stop the Service</string>
+    <string name="intent_and_intent_filters">Intent And Intent Filters</string>
+    <string name="broadcast_receiver">Broadcast Receiver</string>
+    <string name="android_services">Android Services</string>
+    <string name="viewmodel_config_changes">ViewModel Config Changes</string>
+    <string name="coroutine_mvvm_retrofit">Coroutine MVVM Retrofit</string>
+    <string name="work_manager">Work Manager</string>
+    <string name="send_notification">Send Notification</string>
+</resources>
