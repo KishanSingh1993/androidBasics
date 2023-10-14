@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import `in`.eduforyou.androidbasics.broadcast.BroadcastActivity
+import `in`.eduforyou.androidbasics.contentprovider.ContentProviderActivity
 import `in`.eduforyou.androidbasics.intentandintentfilters.IntentAndIntentFiltersActivity
 import `in`.eduforyou.androidbasics.launchmode.standard.StandardActivity1
 import `in`.eduforyou.androidbasics.mvvmwithkotlincoroutinesandretrofit.MovieActivity
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     var btn4:Button?=null
     var btn5:Button?=null
     var btn6:Button?=null
+    var btn7:Button?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +36,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btn4 = findViewById(R.id.btnViewModel)
         btn5 = findViewById(R.id.btnRetrofit)
         btn6 = findViewById(R.id.btnWorkManager)
+        btn7 = findViewById(R.id.btnContentProvider)
         btn1?.setOnClickListener(this)
         btn2?.setOnClickListener(this)
         btn3?.setOnClickListener(this)
         btn4?.setOnClickListener(this)
         btn5?.setOnClickListener(this)
         btn6?.setOnClickListener(this)
+        btn7?.setOnClickListener(this)
         Toast.makeText(applicationContext, "onCreate Called", Toast.LENGTH_LONG).show()
     }
 
@@ -122,7 +126,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 // start your next activity
                 startActivity(intent)
             }
+
+            R.id.btnContentProvider -> {
+
+                //val intent = Intent(this, IntentAndIntentFiltersActivity::class.java)
+                val intent = Intent(this, ContentProviderActivity::class.java)
+                // start your next activity
+                startActivity(intent)
+            }
         }
     }
+
+//    fun onClickShowDetails(view: View) {}
+//    fun onClickAddDetails(view: View) {}
 }
 
